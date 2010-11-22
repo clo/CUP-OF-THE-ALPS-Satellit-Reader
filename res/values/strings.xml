@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, cotaDbReader!</string>
+    <string name="app_name">cotaDbReader</string>
+<string name="quit">Quit?</string>
+
+<string name="really_quit">Do you really want to quit?</string>
+<string name="yes">Yes</string>
+<string name="no">No</string>
+<string name="request">Looking for data...</string>
+</resources>
