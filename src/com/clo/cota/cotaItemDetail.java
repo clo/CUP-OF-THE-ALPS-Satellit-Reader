@@ -20,7 +20,7 @@ public class cotaItemDetail extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_detail);
         fullname = (TextView) findViewById(R.id.TextView_vollname);
-        firma =  (TextView) findViewById(R.id.TextView_Firma);
+        firma =  (TextView) findViewById(R.id.TextView_firma);
         email =  (TextView) findViewById(R.id.TextView_email);
         plzort =  (TextView) findViewById(R.id.TextView_plz_ort);
         adresse = (TextView) findViewById(R.id.TextView_adresse);

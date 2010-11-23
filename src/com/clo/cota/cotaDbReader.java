@@ -1,15 +1,9 @@
 package com.clo.cota;
 
-import java.io.BufferedReader;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -17,33 +11,14 @@ import javax.xml.parsers.SAXParserFactory;
 
 //import javax.xml.transform.stream.StreamSource;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
-import com.clo.cota.dialog.MyProgressDialog;
 import com.clo.cota.entity.User;
 import com.clo.cota.http.HttpRequest;
 import com.clo.cota.sax.MySaxHandler;
 
-//import javax.xml.bind.JAXBContext;
-//import javax.xml.bind.JAXBException;
-//import javax.xml.bind.Unmarshaller;
-
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -56,8 +31,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TextView.SavedState;
-import android.widget.Toast;
 
 public class cotaDbReader extends Activity {
 	static final int PROGRESS_DIALOG = 0;
@@ -68,7 +41,7 @@ public class cotaDbReader extends Activity {
     private Button button;
     private TextView xmlResponse;
     private ProgressDialog progressDialog;
-    HttpRequest httpRequest = null;
+    private HttpRequest httpRequest = null;
     private Handler handler = new Handler(){
         public void handleMessage(Message msg){
             switch(msg.what){
@@ -79,8 +52,6 @@ public class cotaDbReader extends Activity {
             }
         }
     };
-    //private ListView lv;
-    //private SharedPreferences sharedResults;
     
 
 	/** Called when the activity is first created. */
@@ -96,6 +67,7 @@ public class cotaDbReader extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				progressDialog = ProgressDialog.show(cotaDbReader.this, "Processing", "Quering COTA database...");
 				httpRequest = new HttpRequest(searchString.getText().toString());
 				httpRequest.run();
 				//putResultToSharedPref();
@@ -108,6 +80,8 @@ public class cotaDbReader extends Activity {
 				}
 				answerXML = httpRequest.getAnswer();
 				showResults();
+				httpRequest = null;
+				progressDialog.dismiss();
 			}
 		});
         searchString.setOnClickListener(new View.OnClickListener() {
@@ -119,32 +93,8 @@ public class cotaDbReader extends Activity {
 			}
 		});
         
-        //sharedResults = this.getSharedPreferences("myPrefs", MODE_WORLD_READABLE);
     }
     
-    
-    
-//    public void doPost(){
-//    	try {
-//            HttpClient client = new DefaultHttpClient();  
-//            String postURL = "http://somepostaddress.com";
-//            HttpPost post = new HttpPost(postURL); 
-//                List<NameValuePair> params = new ArrayList<NameValuePair>();
-//                params.add(new BasicNameValuePair("user", "kris"));
-//                params.add(new BasicNameValuePair("pass", "xyz"));
-//                UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params,HTTP.UTF_8);
-//                post.setEntity(ent);
-//                HttpResponse responsePOST = client.execute(post);  
-//                HttpEntity resEntity = responsePOST.getEntity();  
-//                if (resEntity != null) {    
-//                    Log.i("RESPONSE",EntityUtils.toString(resEntity));
-//                }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-
 	public void setDebug(TextView debug) {
 		this.debug = debug;
 	}
@@ -155,7 +105,7 @@ public class cotaDbReader extends Activity {
 	}
 	
 	public void showResults(){
-		xmlResponse.setText(answerXML);
+		//xmlResponse.setText(answerXML);
 		MySaxHandler saxHandler = parseXML();
 		Intent i = new Intent(this,cotaListView.class);
 		prepareDateForActivity(i,saxHandler);
@@ -183,7 +133,7 @@ public class cotaDbReader extends Activity {
 	        int i = 1;
 	        for(User user: saxHandler.getUsers()){
 	        	System.out.print(user.getId());
-	        	xmlResponse.append("USER: " + user.getId() + "|" + user.getFirstname() + "|" + user.getLastname() + "\n");
+	        	//xmlResponse.append("USER: " + user.getId() + "|" + user.getFirstname() + "|" + user.getLastname() + "\n");
 	        	i++;
 	        }
 	        Log.e(LOG_COTA_DB,"finished " + i);	

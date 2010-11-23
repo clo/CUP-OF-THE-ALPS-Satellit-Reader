@@ -27,18 +27,16 @@ public class AddressDetailSaxHandler extends DefaultHandler {
 	          throws SAXException {
 		  String value = new String(ch, start, length);
 		  System.out.println(element + "=" + value); 
-		  if (element.equals("Vorname")){
+		  if (element.equals("vorname")){
 			  user.setFirstname(value);
 			  element = "";
-		  }else if (element.equals("Name")){
+		  }else if (element.equals("name")){
 			  user.setLastname(value);	
 			  element = "";
-		  }else if (element.equals("PersonendatenID")){
-			  System.out.println("PersonendatenID: " + value);
+		  }else if (element.equals("personendatenid")){
 			  user.setId(new Integer(value));
 			  element = "";
 		  }else if (element.equals("email")){
-			  System.out.println("E-Mail: " + value);
 			  user.setEmail(value);
 			  element = "";
 		  }else if (element.equals("firma")){
