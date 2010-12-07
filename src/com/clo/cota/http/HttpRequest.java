@@ -11,13 +11,16 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.clo.cota.cotaDbReader;
 
-public class HttpRequest implements Runnable {
+public class HttpRequest {
 
+	private final String LOG_COTA_HTTPREQUEST = "HTTP_REQUEST";
 	private final String host = "http://www.cupofthealps.ch";
 	private final String urlList = "soa/ws-list-address.php";
 	private final String urlDetail = "soa/ws-address-detail.php";
@@ -25,32 +28,37 @@ public class HttpRequest implements Runnable {
 	private String answer = null;
 	private boolean done = false;
 	private int personendatenid=0; 
+//	private SharedPreferences props = null;
+//	private private SharedPreferences.Editor editor = null;
 	
 	private boolean fake = false;
 	
 	public HttpRequest(String search) {
-		super();
 		this.search = search;
+//		init();
 	}
 	
 	public HttpRequest(int personendatenid) {
-		super();
 		this.personendatenid = personendatenid;
 	}
+	
+//	public void init(){
+//		props = getPreferences(PreferenceActivity.MODE_PRIVATE);
+//		editor = props.edit();
+//	}
 
-	@Override
 	public void run() {
-		Log.v("HttpRequest","start of function run");
+		Log.v(LOG_COTA_HTTPREQUEST,"starting thread " + Thread.currentThread().getName() + " ...");
 		if (this.personendatenid>0){
-			Log.v("HttpRequest","Get detail information for address: " + this.personendatenid);
+			Log.v(LOG_COTA_HTTPREQUEST,"TASK: address information: " + this.personendatenid);
 			executeHttpGetDetail();
 		}else if(!this.search.equals(null)){
-			Log.v("HttpRequest","Get list of address: " + search);
+			Log.v(LOG_COTA_HTTPREQUEST,"TASK: list of addresses: " + search);
 			executeHttpGet();
 		}else{
-			Log.i("HttpRequest","Request is not defined correctly");
+			Log.e(LOG_COTA_HTTPREQUEST,"TASK: request is not defined correctly!!");
 		}
-		Log.v("HttpRequest","stop of function run");
+		Log.v(LOG_COTA_HTTPREQUEST,"stopping thread " + Thread.currentThread().getName() + "[ Time to get: TODO! ]");
 	}
 	
     public void executeHttpGet() {
@@ -58,11 +66,11 @@ public class HttpRequest implements Runnable {
     	BufferedReader in = null;
         try {
         	if (!fake){
-	        	Log.i("HttpRequest","starting HTTP request");
+	        	Log.v(LOG_COTA_HTTPREQUEST,"starting HTTP request");
         		HttpClient client = new DefaultHttpClient();
 	            HttpGet request = new HttpGet();
 	            String url = host + "/" + urlList + "?user=" + this.search;
-	            Log.i("HttpRequest",url);
+	            Log.i(LOG_COTA_HTTPREQUEST,url);
         		request.setURI(new URI(url));
 	            HttpResponse response = client.execute(request);
 	            in = new BufferedReader
@@ -77,14 +85,14 @@ public class HttpRequest implements Runnable {
 	            String page = sb.toString();
 	            answer=page;
 	            done = true;
-	            Log.i("HttpRequest",answer);
-	            Log.i("HttpRequest","starting HTTP done");
+	            Log.v(LOG_COTA_HTTPREQUEST,answer);
+	            Log.v(LOG_COTA_HTTPREQUEST,"starting HTTP done");
         	}else{
-        	    Thread.sleep(1000);
+        	    Thread.sleep(2000);
         		answer="<users>";
         		answer+="<post><PersonendatenID>571</PersonendatenID><Vorname>Christian</Vorname><Name>Lochmatter</Name></post>";
         		answer+="<post><PersonendatenID>572</PersonendatenID><Vorname>Stefan</Vorname><Name>Meichtry</Name></post>";
-        	    answer+="<users>";
+        	    answer+="</users>";
         	    done = true;
         	}
         }catch(URISyntaxException e){
@@ -105,16 +113,16 @@ public class HttpRequest implements Runnable {
     }
     
     public void executeHttpGetDetail() {
-    	Log.v("HttpRequest","start of function executeHttpGetDetail");
+    	Log.v(LOG_COTA_HTTPREQUEST,"start of function executeHttpGetDetail");
     	done = false;
     	BufferedReader in = null;
         try {
         	if (!fake){
-	        	Log.i("HttpRequest","starting HTTP request");
+	        	Log.v(LOG_COTA_HTTPREQUEST,"starting HTTP request");
         		HttpClient client = new DefaultHttpClient();
 	            HttpGet request = new HttpGet();
 	            String url = host + "/" + urlDetail + "?personendatenid=" + this.personendatenid;
-	            Log.i("HttpRequest",url);
+	            Log.v(LOG_COTA_HTTPREQUEST,url);
         		request.setURI(new URI(url));
 	            HttpResponse response = client.execute(request);
 	            in = new BufferedReader
@@ -129,15 +137,17 @@ public class HttpRequest implements Runnable {
 	            String page = sb.toString();
 	            answer=page;
 	            done = true;
-	            Log.i("HttpRequest",answer);
-	            Log.i("HttpRequest","starting HTTP done");
+	            Log.v(LOG_COTA_HTTPREQUEST,answer);
+	            Log.v(LOG_COTA_HTTPREQUEST,"starting HTTP done");
         	}else{
         	    Thread.sleep(1000);
         		if (this.personendatenid==571){
-        			answer="<data><user><PersonendatenID>571</PersonendatenID><Vorname>Christian</Vorname><Name>Lochmatter</Name><email>christian.lochmatter@gmx.ch</email></user></data>";
-        		}
-        		if (this.personendatenid==572){
-        			answer="<data><user><PersonendatenID>572</PersonendatenID><Vorname>Stefan</Vorname><Name>Meichtry</Name><email>stefan.meichtry@gmail.com</email></user></data>";
+        			answer="<data><user><personendatenid>571</personendatenid><vorname>Christian</vorname><name>Lochmatter</name><email>christian.lochmatter@gmx.ch</email><firma>Swisscom AG</firma></user></data>";
+        		}else if (this.personendatenid==572){
+        			answer="<data><user><personendatenid>572</personendatenid><vorname>Stefan</vorname><name>Meichtry</name><email>stefan.meichtry@gmail.com</email><firma>Swisscom AG</firma></user></data>";
+        		}else{
+        			answer="";
+        			Log.w(LOG_COTA_HTTPREQUEST,"Nothing found for this id");
         		}
         	    done = true;
         	}
@@ -156,7 +166,7 @@ public class HttpRequest implements Runnable {
                 }
             }
         }
-		Log.v("HttpRequest","stop of function executeHttpGetDetail");    	
+		Log.v(LOG_COTA_HTTPREQUEST,"stop of function executeHttpGetDetail");    	
     }
     
     public boolean isDone() {

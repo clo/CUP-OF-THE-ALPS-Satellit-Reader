@@ -1,7 +1,7 @@
 
 
 
-<RelativeLayout android:id="@+id/RelativeLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="FullName" android:id="@+id/TextView_vollname" android:textSize="18px"></TextView>
+<RelativeLayout android:id="@+id/RelativeLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:longClickable="true"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="FullName" android:id="@+id/TextView_vollname" android:textSize="18px"></TextView>
 
 
 
@@ -9,4 +9,7 @@
 <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Adresse" android:id="@+id/TextView_adresse" android:layout_below="@+id/TextView_firma"></TextView>
 <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/TextView_plz_ort" android:text="PLZ Ort" android:layout_below="@+id/TextView_adresse"></TextView>
 <TextView android:layout_below="@+id/TextView_plz_ort" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/TextView_email" android:text="E-Mail"></TextView>
+<TextView android:layout_below="@+id/TextView_email" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/TextView_mobile" android:text="Mobilenummer"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/TextView_mobile" android:id="@+id/TextView_funktion" android:text="Funktion"></TextView>
+
+
 </RelativeLayout>

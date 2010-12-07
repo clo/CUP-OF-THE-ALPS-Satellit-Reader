@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
     <string name="hello">Hello World, cotaDbReader!</string>
     <string name="app_name">CUP OF THE ALPS Address Satellit</string>
-<string name="quit">Quit</string>
-
-<string name="really_quit">Do you really want to quit?</string>
-<string name="yes">Yes</string>
-<string name="no">No</string>
-<string name="request">Looking for data...</string>
+	<string name="quit">Quit</string>
+	<string name="really_quit">Do you really want to quit?</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="request">Looking for data...</string>
+	<string name="setting">Setting</string>
+	<string name="data">Address Data</string>
+	<string name="no_data">No address found!</string>
+	<string name="ok">Ok</string>
+	<string name="about">About</string>
+	<string name="cfg_connection_title">Connection Parameter</string>
+	<string name="cfg_connection_url">URL</string>
+	<string name="cfg_connection_user">Username</string>
+	<string name="cfg_connection_pass">Password</string>
+	<string name="cfg_connection_fake">Fake</string>
+	<string name="about_title">About</string>
+	<string name="about_text">This program is an ANDROID interface for the CUP OF THE ALPS database.</string>
+	<string name="ctx_reset">Reset</string>
+	<string name="ctx_settings">Settings</string>
+	<string name="ctx_quit">Quit</string>
+	<string name="ctx_prepStmt">Prepared Statement</string>
+	<string name="ctx_sub_ok">OK</string>
+	<string name="ctx_sub_sponsors">Sponsors</string>
 </resources>

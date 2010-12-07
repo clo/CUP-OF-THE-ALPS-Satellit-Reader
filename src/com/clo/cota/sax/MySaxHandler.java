@@ -6,9 +6,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import android.util.Log;
+
 import com.clo.cota.entity.User;
 
 public class MySaxHandler extends DefaultHandler {
+	  static final String LOG_SAX_HANDLER = "address list sax handler";
 	  private List<User> users = new ArrayList<User>();
 	  private User user = null;
 	  private String element = null;
@@ -18,7 +21,7 @@ public class MySaxHandler extends DefaultHandler {
               String localName,
               String qName,
               Attributes attrs) throws SAXException {
-		  System.out.println("STARTELEMENT: " + localName);
+		  Log.v(LOG_SAX_HANDLER,"STARTELEMENT: " + localName);
 		  element = localName;
 		  if (localName.equals("post")){
 			  user = new User();
@@ -29,7 +32,7 @@ public class MySaxHandler extends DefaultHandler {
 	  public void characters(char[] ch, int start, int length)
 	          throws SAXException {
 		  String value = new String(ch, start, length);
-		  System.out.println(element + "=" + value); 
+		  Log.v(LOG_SAX_HANDLER,element + "=" + value); 
 		  if (element.equals("Vorname")){
 			  user.setFirstname(value);
 			  element = "";
@@ -37,7 +40,6 @@ public class MySaxHandler extends DefaultHandler {
 			  user.setLastname(value);	
 			  element = "";
 		  }else if (element.equals("PersonendatenID")){
-			  System.out.println("PersonendatenID: " + value);
 			  user.setId(new Integer(value));
 			  element = "";
 		  }
@@ -46,7 +48,7 @@ public class MySaxHandler extends DefaultHandler {
 	  @Override
 	  public void endElement(String ns, String localName, String qName)
 	          throws SAXException {
-		  System.out.println("ENDELEMENT: " + localName);
+		  Log.v(LOG_SAX_HANDLER,"ENDELEMENT: " + localName);
 		  if (localName.equals("post")){
 			  if (!user.equals(null)){
 				  users.add(user);

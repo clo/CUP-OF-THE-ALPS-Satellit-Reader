@@ -20,4 +20,7 @@
 
 
 <TextView android:text="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/xml"></TextView>
+
+<View android:id="@+id/View01" android:layout_width="wrap_content" android:layout_height="wrap_content"></View>
+
 </LinearLayout>

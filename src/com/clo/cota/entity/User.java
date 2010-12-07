@@ -8,6 +8,8 @@ public class User {
 	private String city = null;
 	private String address = null;
 	private String firma = null;
+	private String mobile = null;
+	private String function = null;
 	
 	private int id;
 	
@@ -65,6 +67,20 @@ public class User {
 	public void setFirma(String firma) {
 		this.firma = firma;
 	}
+	public String getMobile() {
+		return mobile;
+	}
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+	public String getFunction() {
+		return function;
+	}
+	public void setFunction(String function) {
+		this.function = function;
+	}
+	
+	
 	
 	
 }

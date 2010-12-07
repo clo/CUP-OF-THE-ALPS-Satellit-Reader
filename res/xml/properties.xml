@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android=
+"http://schemas.android.com/apk/res/android"
+android:title="@string/app_name">
+
+<PreferenceCategory
+android:title="@string/cfg_connection_title"
+>
+<EditTextPreference
+	android:title="@string/cfg_connection_url"
+android:key="url"/>
+<EditTextPreference
+	android:key="username"
+	android:title="@string/cfg_connection_user"
+/>
+<EditTextPreference
+	android:key="password"
+	android:title="@string/cfg_connection_pass"
+/>
+</PreferenceCategory>
+<CheckBoxPreference android:title="@string/cfg_connection_fake" android:key="fake"></CheckBoxPreference>
+</PreferenceScreen>

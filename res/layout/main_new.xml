@@ -1,0 +1,32 @@
+<RelativeLayout android:id="@+id/RelativeLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@drawable/cota_sw" android:clickable="true" android:longClickable="true">
+
+
+<EditText 
+	android:layout_toLeftOf="@+id/View01" 
+	android:layout_height="wrap_content" 
+	android:id="@+id/search" 
+	android:singleLine="true" 
+	android:layout_width="fill_parent">
+</EditText>
+
+<TextView android:layout_toLeftOf="@+id/View01" 
+	android:layout_below="@+id/search" 
+	android:id="@+id/textview" 
+	android:text="" 
+	android:layout_height="fill_parent"
+	android:layout_width="fill_parent">
+</TextView>
+
+<Button 
+	android:text="@+id/Button01" 
+	android:layout_height="wrap_content" 
+	android:layout_toRightOf="@+id/search" 
+	android:id="@+id/button" 
+	android:layout_width="20px">
+</Button>
+
+
+
+
+
+</RelativeLayout>

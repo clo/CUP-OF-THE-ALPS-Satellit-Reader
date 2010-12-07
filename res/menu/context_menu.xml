@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+	android:id="@+id/ctx_reset"
+	android:title="@string/ctx_reset">
+</item>
+<item
+	android:id="@+id/ctx_settings"
+	android:title="@string/ctx_settings">
+</item>
+<item
+	android:id="@+id/ctx_prepStmt"
+	android:title="@string/ctx_prepStmt">
+	<menu>
+		<item 
+			android:id="@+id/ctx_sub_ok"
+	    	android:title="@string/ctx_sub_ok" />
+	    <item 
+	    	android:id="@+id/ctx_sub_sponsors"
+	    	android:title="@string/ctx_sub_sponsors" />
+	</menu>
+</item>
+<item
+	android:id="@+id/ctx_quit"
+	android:title="@string/ctx_quit">
+</item>
+</menu>

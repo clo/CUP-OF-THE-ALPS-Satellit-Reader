@@ -15,12 +15,15 @@ import org.xml.sax.SAXException;
 
 import com.clo.cota.entity.User;
 import com.clo.cota.http.HttpRequest;
+import com.clo.cota.http.HttpRequestThread;
 import com.clo.cota.sax.AddressDetailSaxHandler;
 import com.clo.cota.sax.MySaxHandler;
 
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
@@ -36,41 +39,78 @@ public class cotaListView extends ListActivity implements OnGestureListener {
 	private List<String> RESULTS = new ArrayList<String>();
 	private List<String> RESULTS_IDS = new ArrayList<String>();
 	private ListView lv = null;
-	HttpRequest httpRequest = null;
+	private HttpRequestThread httpRequest = null;
 	private String answer = null;
+	private Handler handler = null;
+	private int idSelected = 0;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	  super.onCreate(savedInstanceState);
-	  
-	  try{
-		  fillArray();
-		  setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, RESULTS));
-		  lv = getListView();
-		  lv.setTextFilterEnabled(true);
-	  }catch(Exception e){
-		  e.printStackTrace();
-	  }
-
+	  setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item,R.id.TextView, RESULTS));
+	  fillArray();
+	  lv = getListView();
+	  lv.setTextFilterEnabled(true);
+	  handler = new Handler(){
+		  public void handleMessage(Message msg){
+			  Log.v(LOG_COTA_LISTVIEW,"handleMessage");
+			  Bundle b = msg.getData();
+			  if(b.getString("action").equals("STARTPROGDIAG")){
+				  //showProgessDialog();
+			  }else if(b.getString("action").equals("STOPPROGDIAG")){
+				  //hideProgessDialog();
+				  answer=b.getString("answer");
+				  showResult();
+			  }
+		  }
+	  };
 	}
 	
 	@Override
 	 protected void onListItemClick(ListView l, View v, int position, long id) {
 		Log.v("cotaListView","onListItemClick: " + id + "=" + RESULTS.get((int) id));
+		idSelected = new Integer(RESULTS_IDS.get((int) id));
+//		httpRequest = new HttpRequestThread(new Integer(RESULTS_IDS.get((int) id)));
+//		httpRequest.run();
+//		
+//		while(!httpRequest.isDone()){
+//			try {
+//				Thread.sleep(10);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//		answer = httpRequest.getAnswer();
+//		httpRequest = null;
 		
-		httpRequest = new HttpRequest(new Integer(RESULTS_IDS.get((int) id)));
-		httpRequest.run();
-		
-		while(!httpRequest.isDone()){
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		Thread t = new Thread(){
+			
+			public void run(){
+				Log.v(LOG_COTA_LISTVIEW,"Thread started ...");
+				Message msg = new Message();
+				Bundle b = new Bundle();
+				b.putString("action","STARTPROGDIAG");
+				msg.setData(b);
+				handler.sendMessage(msg);
+				//start slow request
+				Log.v(LOG_COTA_LISTVIEW,"selected id: " + idSelected);
+				HttpRequest hr = new HttpRequest(idSelected);
+				hr.run();
+				msg = new Message();
+				b = new Bundle();
+				b.putString("answer",hr.getAnswer());
+				b.putString("action", "STOPPROGDIAG");
+				msg.setData(b);
+				handler.sendMessage(msg);
+				Log.v(LOG_COTA_LISTVIEW,"... Thread finished.");
 			}
-		}
-		
-		answer = httpRequest.getAnswer();
-		httpRequest = null;
+			
+		};
+		t.start();
+	 }
+	
+	private void showResult(){
 		User user = parseXML(answer);
 		
 		Bundle bundle = new Bundle();
@@ -80,12 +120,14 @@ public class cotaListView extends ListActivity implements OnGestureListener {
 		bundle.putString("email", user.getEmail());
 		bundle.putString("zip", user.getZip());
 		bundle.putString("city", user.getCity());
-
+		bundle.putString("mobile", user.getMobile());
+		bundle.putString("firma", user.getFirma());
+		bundle.putString("funktion",user.getFunction());
+		
 		Intent i = new Intent(this,cotaItemDetail.class);
 		i.putExtras(bundle);
 		startActivity(i);
-
-	 }
+	}
 	
 	private void fillArray(){
 		Bundle b = getIntent().getExtras();
