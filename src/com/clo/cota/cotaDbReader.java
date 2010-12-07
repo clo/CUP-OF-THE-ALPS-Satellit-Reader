@@ -53,11 +53,13 @@ public class cotaDbReader extends Activity {
 	static final String LOG_COTA_DB = "COTADB";
 	static final int KEYCODE_ENTER = 66;
     private EditText searchString;
+    private int categoryid=0;
     private String answerXML;
     private Button button;
     private ProgressDialog progressDialog = null;
     private Handler handler = null;
     private TextView textview = null; 
+    private HttpRequest.requestEnum request = null;
 
 	/** Called when the activity is first created. */
     @Override
@@ -150,7 +152,14 @@ public class cotaDbReader extends Activity {
 				msg.setData(b);
 				handler.sendMessage(msg);
 				//start slow request
-				HttpRequest hr = new HttpRequest(searchString.getText().toString());
+				HttpRequest hr = new HttpRequest(request); 
+				if (request == HttpRequest.requestEnum.NAME){
+					hr.setSearch(searchString.getText().toString());
+				}else if(request == HttpRequest.requestEnum.CATEGORY){
+					hr.setCategoryid(categoryid);
+				}else{
+					//TODO
+				}
 				hr.run();
 				msg = new Message();
 				b = new Bundle();
@@ -353,8 +362,14 @@ public class cotaDbReader extends Activity {
 	  		exit();
 	  		return true;
 	  	case R.id.ctx_sub_ok:
+	  		request = HttpRequest.requestEnum.CATEGORY;
+	  		categoryid=18;
+	  		runQuery();
 	  		return true;
 	  	case R.id.ctx_sub_sponsors:
+	  		request = HttpRequest.requestEnum.CATEGORY;
+	  		categoryid=12; //12 = 1/1 Inserat
+	  		runQuery();
 	  		return true;
 	  default:
 	    return super.onContextItemSelected(item);

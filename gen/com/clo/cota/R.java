@@ -34,12 +34,12 @@ public final class R {
         public static final int View01=0x7f070010;
         public static final int about=0x7f07001c;
         public static final int button=0x7f070014;
-        public static final int ctx_prepStmt=0x7f070017;
+        public static final int ctx_prepStmt=0x7f070016;
         public static final int ctx_quit=0x7f07001a;
         public static final int ctx_reset=0x7f070015;
-        public static final int ctx_settings=0x7f070016;
-        public static final int ctx_sub_ok=0x7f070018;
-        public static final int ctx_sub_sponsors=0x7f070019;
+        public static final int ctx_settings=0x7f070019;
+        public static final int ctx_sub_ok=0x7f070017;
+        public static final int ctx_sub_sponsors=0x7f070018;
         public static final int getit=0x7f07000e;
         public static final int quit=0x7f07001d;
         public static final int search=0x7f070011;

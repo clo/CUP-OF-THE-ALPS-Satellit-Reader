@@ -95,7 +95,8 @@ public class cotaListView extends ListActivity implements OnGestureListener {
 				handler.sendMessage(msg);
 				//start slow request
 				Log.v(LOG_COTA_LISTVIEW,"selected id: " + idSelected);
-				HttpRequest hr = new HttpRequest(idSelected);
+				HttpRequest hr = new HttpRequest(HttpRequest.requestEnum.ID);
+				hr.setPersonendatenid(idSelected);
 				hr.run();
 				msg = new Message();
 				b = new Bundle();
