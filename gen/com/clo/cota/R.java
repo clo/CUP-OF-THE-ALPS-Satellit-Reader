@@ -13,8 +13,9 @@ public final class R {
     public static final class drawable {
         public static final int cota=0x7f020000;
         public static final int cota2=0x7f020001;
-        public static final int cota_sw=0x7f020002;
-        public static final int icon=0x7f020003;
+        public static final int cota_list=0x7f020002;
+        public static final int cota_sw=0x7f020003;
+        public static final int icon=0x7f020004;
     }
     public static final class id {
         public static final int Button01=0x7f070013;
