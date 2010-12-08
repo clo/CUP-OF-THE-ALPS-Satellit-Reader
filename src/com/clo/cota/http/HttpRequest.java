@@ -17,6 +17,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.clo.cota.cotaDbReader;
+import com.clo.cota.enums.EHttpRequest;
 
 public class HttpRequest {
 
@@ -30,8 +31,7 @@ public class HttpRequest {
 	private int categoryid=0;
 	private String answer = null;
 	private boolean done = false;
-	public enum requestEnum { NAME, ID, CATEGORY };
-	private requestEnum request = requestEnum.NAME;
+	private EHttpRequest request = EHttpRequest.NAME;
 	
 	private boolean fake = false;
 	
@@ -44,7 +44,7 @@ public class HttpRequest {
 		this.personendatenid = personendatenid;
 	}
 	
-	public HttpRequest(requestEnum request){
+	public HttpRequest(EHttpRequest request){
 		this.request = request;
 	}
 	
@@ -55,17 +55,20 @@ public class HttpRequest {
 
 	public void run() {
 		Log.v(LOG_COTA_HTTPREQUEST,"starting thread " + Thread.currentThread().getName() + " ...");
-		if (request == request.ID && this.personendatenid>0){
+		if (this.request == request.ID && this.personendatenid>0){
 			Log.v(LOG_COTA_HTTPREQUEST,"TASK: address information: " + this.personendatenid);
 			executeHttpGetDetail();
-		}else if(request == request.NAME && !this.search.equals(null)){
+		}else if(this.request == request.NAME && !this.search.equals(null)){
 			Log.v(LOG_COTA_HTTPREQUEST,"TASK: list of addresses: " + search);
 			executeHttpGet();
-		}else if(request == request.CATEGORY && this.categoryid>0){
+		}else if(this.request == request.CATEGORY && this.categoryid>0){
 			Log.v(LOG_COTA_HTTPREQUEST,"TASK: list of addresses: " + search);
 			executeHttpGetCategory();
 		}else{
-			Log.e(LOG_COTA_HTTPREQUEST,"TASK: request is not defined correctly!!");
+			Log.e(LOG_COTA_HTTPREQUEST,"TASK: request is not defined correctly!");
+			Log.v(LOG_COTA_HTTPREQUEST,"personendatenID=" + this.personendatenid);
+			Log.v(LOG_COTA_HTTPREQUEST,"searchstring=" + this.search);
+			Log.v(LOG_COTA_HTTPREQUEST,"categorieID=" + this.categoryid);
 		}
 		Log.v(LOG_COTA_HTTPREQUEST,"stopping thread " + Thread.currentThread().getName() + "[ Time to get: TODO! ]");
 	}

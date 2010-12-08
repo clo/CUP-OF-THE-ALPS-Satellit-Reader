@@ -15,6 +15,7 @@ import org.xml.sax.SAXException;
 
 import com.clo.cota.cfg.CotaDbProperties;
 import com.clo.cota.entity.User;
+import com.clo.cota.enums.EHttpRequest;
 import com.clo.cota.http.HttpRequest;
 import com.clo.cota.sax.MySaxHandler;
 
@@ -59,7 +60,7 @@ public class cotaDbReader extends Activity {
     private ProgressDialog progressDialog = null;
     private Handler handler = null;
     private TextView textview = null; 
-    private HttpRequest.requestEnum request = null;
+    private EHttpRequest request = null;
 
 	/** Called when the activity is first created. */
     @Override
@@ -97,6 +98,7 @@ public class cotaDbReader extends Activity {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (keyCode == KEYCODE_ENTER) {
 					Log.v(LOG_COTA_DB,"Enter detected...");
+					request = EHttpRequest.NAME;
 					runQuery();
 				}
 				return false;
@@ -153,9 +155,10 @@ public class cotaDbReader extends Activity {
 				handler.sendMessage(msg);
 				//start slow request
 				HttpRequest hr = new HttpRequest(request); 
-				if (request == HttpRequest.requestEnum.NAME){
+				Log.v(LOG_COTA_DB,"request= " + request.toString());
+				if (request == EHttpRequest.NAME){
 					hr.setSearch(searchString.getText().toString());
-				}else if(request == HttpRequest.requestEnum.CATEGORY){
+				}else if(request == EHttpRequest.CATEGORY){
 					hr.setCategoryid(categoryid);
 				}else{
 					//TODO
@@ -167,6 +170,8 @@ public class cotaDbReader extends Activity {
 				b.putString("action", "STOPPROGDIAG");
 				msg.setData(b);
 				handler.sendMessage(msg);
+				hr = null;
+				b = null;
 				Log.v(LOG_COTA_DB,"... Thread finished.");
 			}
 		};
@@ -362,12 +367,12 @@ public class cotaDbReader extends Activity {
 	  		exit();
 	  		return true;
 	  	case R.id.ctx_sub_ok:
-	  		request = HttpRequest.requestEnum.CATEGORY;
+	  		this.request = EHttpRequest.CATEGORY;
 	  		categoryid=18;
 	  		runQuery();
 	  		return true;
 	  	case R.id.ctx_sub_sponsors:
-	  		request = HttpRequest.requestEnum.CATEGORY;
+	  		this.request = EHttpRequest.CATEGORY;
 	  		categoryid=12; //12 = 1/1 Inserat
 	  		runQuery();
 	  		return true;

@@ -32,19 +32,20 @@ public final class R {
         public static final int TextView_plz_ort=0x7f070004;
         public static final int TextView_vollname=0x7f070001;
         public static final int View01=0x7f070010;
-        public static final int about=0x7f07001c;
+        public static final int about=0x7f07001d;
         public static final int button=0x7f070014;
-        public static final int ctx_prepStmt=0x7f070016;
-        public static final int ctx_quit=0x7f07001a;
-        public static final int ctx_reset=0x7f070015;
-        public static final int ctx_settings=0x7f070019;
-        public static final int ctx_sub_ok=0x7f070017;
-        public static final int ctx_sub_sponsors=0x7f070018;
+        public static final int ctx_prepStmt=0x7f070017;
+        public static final int ctx_quit=0x7f07001b;
+        public static final int ctx_reset=0x7f070016;
+        public static final int ctx_settings=0x7f07001a;
+        public static final int ctx_sub_ok=0x7f070018;
+        public static final int ctx_sub_sponsors=0x7f070019;
         public static final int getit=0x7f07000e;
-        public static final int quit=0x7f07001d;
+        public static final int mapview_strassenkarte=0x7f070015;
+        public static final int quit=0x7f07001e;
         public static final int search=0x7f070011;
         public static final int searchParam=0x7f07000d;
-        public static final int settings=0x7f07001b;
+        public static final int settings=0x7f07001c;
         public static final int textview=0x7f070012;
         public static final int xml=0x7f07000f;
     }
@@ -53,6 +54,7 @@ public final class R {
         public static final int list_item=0x7f030001;
         public static final int main=0x7f030002;
         public static final int main_new=0x7f030003;
+        public static final int map_location=0x7f030004;
     }
     public static final class menu {
         public static final int context_menu=0x7f060000;

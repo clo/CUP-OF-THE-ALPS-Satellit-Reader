@@ -14,6 +14,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
 import com.clo.cota.entity.User;
+import com.clo.cota.enums.EHttpRequest;
 import com.clo.cota.http.HttpRequest;
 import com.clo.cota.http.HttpRequestThread;
 import com.clo.cota.sax.AddressDetailSaxHandler;
@@ -70,22 +71,7 @@ public class cotaListView extends ListActivity implements OnGestureListener {
 	 protected void onListItemClick(ListView l, View v, int position, long id) {
 		Log.v("cotaListView","onListItemClick: " + id + "=" + RESULTS.get((int) id));
 		idSelected = new Integer(RESULTS_IDS.get((int) id));
-//		httpRequest = new HttpRequestThread(new Integer(RESULTS_IDS.get((int) id)));
-//		httpRequest.run();
-//		
-//		while(!httpRequest.isDone()){
-//			try {
-//				Thread.sleep(10);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		answer = httpRequest.getAnswer();
-//		httpRequest = null;
-		
 		Thread t = new Thread(){
-			
 			public void run(){
 				Log.v(LOG_COTA_LISTVIEW,"Thread started ...");
 				Message msg = new Message();
@@ -95,7 +81,7 @@ public class cotaListView extends ListActivity implements OnGestureListener {
 				handler.sendMessage(msg);
 				//start slow request
 				Log.v(LOG_COTA_LISTVIEW,"selected id: " + idSelected);
-				HttpRequest hr = new HttpRequest(HttpRequest.requestEnum.ID);
+				HttpRequest hr = new HttpRequest(EHttpRequest.ID);
 				hr.setPersonendatenid(idSelected);
 				hr.run();
 				msg = new Message();
@@ -104,6 +90,8 @@ public class cotaListView extends ListActivity implements OnGestureListener {
 				b.putString("action", "STOPPROGDIAG");
 				msg.setData(b);
 				handler.sendMessage(msg);
+				b = null;
+				hr = null;
 				Log.v(LOG_COTA_LISTVIEW,"... Thread finished.");
 			}
 			
