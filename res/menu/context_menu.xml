@@ -11,9 +11,21 @@
 		<item 
 			android:id="@+id/ctx_sub_ok"
 	    	android:title="@string/ctx_sub_ok" />
+		<item 
+	    	android:id="@+id/ctx_sub_sponsors_main"
+	    	android:title="@string/ctx_sub_sponsors_main" />
+		<item 
+	    	android:id="@+id/ctx_sub_sponsors_offical"
+	    	android:title="@string/ctx_sub_sponsors_offical" />
 	    <item 
-	    	android:id="@+id/ctx_sub_sponsors"
-	    	android:title="@string/ctx_sub_sponsors" />
+	    	android:id="@+id/ctx_sub_sponsors_1_site"
+	    	android:title="@string/ctx_sub_sponsors_1_site" />
+	   	<item 
+	    	android:id="@+id/ctx_sub_sponsors_12_site"
+	    	android:title="@string/ctx_sub_sponsors_12_site" />
+		<item 
+	    	android:id="@+id/ctx_sub_sponsors_14_site"
+	    	android:title="@string/ctx_sub_sponsors_14_site" />
 	</menu>
 </item>
 <item

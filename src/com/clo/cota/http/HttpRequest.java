@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -53,7 +54,7 @@ public class HttpRequest {
 //		editor = props.edit();
 //	}
 
-	public void run() {
+	public void run() throws UnknownHostException {
 		Log.v(LOG_COTA_HTTPREQUEST,"starting thread " + Thread.currentThread().getName() + " ...");
 		if (this.request == request.ID && this.personendatenid>0){
 			Log.v(LOG_COTA_HTTPREQUEST,"TASK: address information: " + this.personendatenid);
@@ -73,7 +74,7 @@ public class HttpRequest {
 		Log.v(LOG_COTA_HTTPREQUEST,"stopping thread " + Thread.currentThread().getName() + "[ Time to get: TODO! ]");
 	}
 	
-    public void executeHttpGet() {
+    public void executeHttpGet() throws UnknownHostException {
     	done = false;
     	BufferedReader in = null;
         try {

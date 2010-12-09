@@ -4,6 +4,7 @@ package com.clo.cota;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -88,7 +89,6 @@ public class cotaDbReader extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showProgessDialog();
 				runQuery();
 			}
 		});
@@ -147,32 +147,38 @@ public class cotaDbReader extends Activity {
     public void runQuery(){
     	Thread t = new Thread(){
 			public void run(){
-				Log.v(LOG_COTA_DB,"Thread started ...");
-				Message msg = new Message();
-				Bundle b = new Bundle();
-				b.putString("action","STARTPROGDIAG");
-				msg.setData(b);
-				handler.sendMessage(msg);
-				//start slow request
-				HttpRequest hr = new HttpRequest(request); 
-				Log.v(LOG_COTA_DB,"request= " + request.toString());
-				if (request == EHttpRequest.NAME){
-					hr.setSearch(searchString.getText().toString());
-				}else if(request == EHttpRequest.CATEGORY){
-					hr.setCategoryid(categoryid);
-				}else{
-					//TODO
-				}
-				hr.run();
-				msg = new Message();
-				b = new Bundle();
-				b.putString("answer",hr.getAnswer());
-				b.putString("action", "STOPPROGDIAG");
-				msg.setData(b);
-				handler.sendMessage(msg);
-				hr = null;
-				b = null;
-				Log.v(LOG_COTA_DB,"... Thread finished.");
+				try{
+				    Log.v(LOG_COTA_DB,"Thread started ...");
+					Message msg = new Message();
+					Bundle b = new Bundle();
+					b.putString("action","STARTPROGDIAG");
+					msg.setData(b);
+					handler.sendMessage(msg);
+					//start slow request
+					HttpRequest hr = new HttpRequest(request); 
+					Log.v(LOG_COTA_DB,"request= " + request.toString());
+					if (request == EHttpRequest.NAME){
+						hr.setSearch(searchString.getText().toString());
+					}else if(request == EHttpRequest.CATEGORY){
+						hr.setCategoryid(categoryid);
+					}else{
+						//TODO
+					}
+					hr.run();
+					msg = new Message();
+					b = new Bundle();
+					b.putString("answer",hr.getAnswer());
+					b.putString("action", "STOPPROGDIAG");
+					msg.setData(b);
+					handler.sendMessage(msg);
+					hr = null;
+					b = null;
+					Log.v(LOG_COTA_DB,"... Thread finished.");
+		    	}catch(UnknownHostException e){
+		    		showErrorDialog(e.getCause().toString());
+		    	}catch(Exception e){
+		    		showErrorDialog(e.getCause().toString());
+		    	}
 			}
 		};
 		t.start();
@@ -193,7 +199,15 @@ public class cotaDbReader extends Activity {
     	}
     }
     
-	public void showResults(){
+    private void showErrorDialog(String error){
+    	Log.v(LOG_COTA_DB,"Start progress dialog...");
+    	if (progressDialog == null){
+    	  progressDialog = ProgressDialog.show(cotaDbReader.this, "Error", "There has been an error occured.\n" + error);
+    	}
+    	progressDialog.show();
+    }
+    
+    public void showResults(){
 		MySaxHandler saxHandler = parseXML();
 		if (saxHandler.getUsers().size() > 0){
 		  Intent i = new Intent(this,cotaListView.class);
@@ -352,7 +366,66 @@ public class cotaDbReader extends Activity {
 	  MenuInflater inflater = getMenuInflater();
 	  inflater.inflate(R.menu.context_menu, menu);
 	}
-	
+
+	/*
+	+-------------------+-------------+--------------------------------------+
+	| KategorieGruppeID | KategorieID | KategorieName                        |
+	+-------------------+-------------+--------------------------------------+
+	|                 0 |           1 | Archiv 2001                          |
+	|                 3 |           2 | Betreuer                             |
+	|                 6 |           3 | Botschaften                          |
+	|                 2 |           4 | Bronze-Ball                          |
+	|                 2 |           5 | Co-Sponsor                           |
+	|                 0 |           6 | Diverse                              |
+	|                 2 |           7 | Gold-Ball                            |
+	|                 2 |           8 | G÷nner                               |
+	|                 2 |           9 | Hauptsponsor                         |
+	|                 6 |          10 | Helfer                               |
+	|                 0 |          11 | Hotel                                |
+	|                 2 |          12 | Inserat 1/1                          |
+	|                 2 |          13 | Inserat 1/2                          |
+	|                 2 |          14 | Inserat 1/4                          |
+	|                 2 |          15 | Kommissõr                            |
+	|                 0 |          16 | Medien                               |
+	|                 2 |          17 | Offizieller Sponsor                  |
+	|                 1 |          18 | OK-Stab                              |
+	|                 1 |          19 | Ressortchef                          |
+	|                 4 |          20 | Schiedsrichter                       |
+	|                 2 |          21 | Silber-Ball                          |
+	|                 1 |          22 | Mannschaften                         |
+	|                 2 |          23 | Tombola                              |
+	|                 0 |          24 | Verbõnde / Organisationen            |
+	|                 2 |          25 | VIP-Ball                             |
+	|                 1 |          28 | Jury                                 |
+	|                 6 |          29 | K³nstler                             |
+	|                 1 |          30 | Spielleiter                          |
+	|                 6 |          31 | Gõste                                |
+	|                 0 |          33 | FC Naters                            |
+	|                 6 |          36 | Ehrengõste                           |
+	|                 6 |          37 | Ehrenmitglied FC Naters              |
+	|                 6 |          38 | VIP-Sponsor FC Naters                |
+	|                 0 |          62 | Egga-Fest                            |
+	|                 0 |          61 | Patronat                             |
+	|                 0 |          63 | Badge                                |
+	|                 0 |          64 | Notrufnummer                         |
+	|                 1 |          65 | Speaker                              |
+	|                 0 |          66 | Sitzung_Brainstorming_27072006       |
+	|                 1 |          67 | Erweitertes-OK                       |
+	|                 2 |          68 | Flyer                                |
+	|                 0 |          69 | Podiumsgesprõch mit Apero            |
+	|                 0 |          70 | Podiumsgesprõch ohne Apero           |
+	|                 2 |          71 | Offizieller Ausr³ster                |
+	|                 2 |          72 | Eintrittssponsor                     |
+	|                 2 |          73 | Survival Lounge                      |
+	|                 0 |          74 | Trainer Team Oberwallis              |
+	|                 0 |          75 | Junioren F-Turnier                   |
+	|                 0 |          76 | Referent                             |
+	|                 0 |          77 | Verstorben                           |
+	|                 0 |          78 | Oberwalliser Fussballverein          |
+	|                 0 |          79 | Jury-Prõsident                       |
+	|                 2 |          81 | Survival Lounge - Olivier Constantin |
+	+-------------------+-------------+--------------------------------------+	
+	*/
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 	  AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
@@ -371,9 +444,24 @@ public class cotaDbReader extends Activity {
 	  		categoryid=18;
 	  		runQuery();
 	  		return true;
-	  	case R.id.ctx_sub_sponsors:
+	  	case R.id.ctx_sub_sponsors_1_site:
 	  		this.request = EHttpRequest.CATEGORY;
-	  		categoryid=12; //12 = 1/1 Inserat
+	  		categoryid=12;
+	  		runQuery();
+	  		return true;
+	  	case R.id.ctx_sub_sponsors_12_site:
+	  		this.request = EHttpRequest.CATEGORY;
+	  		categoryid=13; 
+	  		runQuery();
+	  		return true;
+	  	case R.id.ctx_sub_sponsors_14_site:
+	  		this.request = EHttpRequest.CATEGORY;
+	  		categoryid=14; 
+	  		runQuery();
+	  		return true;
+	  	case R.id.ctx_sub_sponsors_main:
+	  		this.request = EHttpRequest.CATEGORY;
+	  		categoryid=9;
 	  		runQuery();
 	  		return true;
 	  default:

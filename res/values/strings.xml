@@ -24,6 +24,11 @@
 	<string name="ctx_settings">Settings</string>
 	<string name="ctx_quit">Quit</string>
 	<string name="ctx_prepStmt">Prepared Statement</string>
-	<string name="ctx_sub_ok">OK</string>
+	<string name="ctx_sub_ok">Organisation Comite</string>
+	<string name="ctx_sub_sponsors_1_site">1 Site</string>
+	<string name="ctx_sub_sponsors_12_site">0.5 Site</string>
+	<string name="ctx_sub_sponsors_14_site">0.25 Site</string>
+	<string name="ctx_sub_sponsors_main">Main Sponsor</string>
 	<string name="ctx_sub_sponsors">Sponsors</string>
+	<string name="ctx_sub_sponsors_offical">Offical Sponsor</string>
 </resources>

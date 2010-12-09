@@ -3,6 +3,7 @@ package com.clo.cota;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,7 @@ import com.clo.cota.sax.AddressDetailSaxHandler;
 import com.clo.cota.sax.MySaxHandler;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -73,26 +75,30 @@ public class cotaListView extends ListActivity implements OnGestureListener {
 		idSelected = new Integer(RESULTS_IDS.get((int) id));
 		Thread t = new Thread(){
 			public void run(){
-				Log.v(LOG_COTA_LISTVIEW,"Thread started ...");
-				Message msg = new Message();
-				Bundle b = new Bundle();
-				b.putString("action","STARTPROGDIAG");
-				msg.setData(b);
-				handler.sendMessage(msg);
-				//start slow request
-				Log.v(LOG_COTA_LISTVIEW,"selected id: " + idSelected);
-				HttpRequest hr = new HttpRequest(EHttpRequest.ID);
-				hr.setPersonendatenid(idSelected);
-				hr.run();
-				msg = new Message();
-				b = new Bundle();
-				b.putString("answer",hr.getAnswer());
-				b.putString("action", "STOPPROGDIAG");
-				msg.setData(b);
-				handler.sendMessage(msg);
-				b = null;
-				hr = null;
-				Log.v(LOG_COTA_LISTVIEW,"... Thread finished.");
+				try{
+					Log.v(LOG_COTA_LISTVIEW,"Thread started ...");
+					Message msg = new Message();
+					Bundle b = new Bundle();
+					b.putString("action","STARTPROGDIAG");
+					msg.setData(b);
+					handler.sendMessage(msg);
+					//start slow request
+					Log.v(LOG_COTA_LISTVIEW,"selected id: " + idSelected);
+					HttpRequest hr = new HttpRequest(EHttpRequest.ID);
+					hr.setPersonendatenid(idSelected);
+					hr.run();
+					msg = new Message();
+					b = new Bundle();
+					b.putString("answer",hr.getAnswer());
+					b.putString("action", "STOPPROGDIAG");
+					msg.setData(b);
+					handler.sendMessage(msg);
+					b = null;
+					hr = null;
+					Log.v(LOG_COTA_LISTVIEW,"... Thread finished.");
+				}catch(UnknownHostException e){
+		    		showErrorDialog(e.getCause().toString());
+		    	}
 			}
 			
 		};
@@ -199,5 +205,14 @@ public class cotaListView extends ListActivity implements OnGestureListener {
 		// TODO Auto-generated method stub
 		Log.i("cotaListView","onLongPress");
 	}
+	
+    private void showErrorDialog(String error){
+    	Log.v(LOG_COTA_LISTVIEW,"Start progress dialog...");
+    	ProgressDialog progressDialog = null;
+    	if (progressDialog == null){
+    	  progressDialog = ProgressDialog.show(cotaListView.this, "Error", "There has been an error occured.\n" + error);
+    	}
+    	progressDialog.show();
+    }
 	
 }
