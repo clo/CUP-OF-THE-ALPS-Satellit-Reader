@@ -34,7 +34,7 @@ public class HttpRequest {
 	private boolean done = false;
 	private EHttpRequest request = EHttpRequest.NAME;
 	
-	private boolean fake = false;
+	private boolean fake = true;
 	
 	public HttpRequest(String search) {
 		this.search = search;

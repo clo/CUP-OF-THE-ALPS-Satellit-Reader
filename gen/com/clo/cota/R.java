@@ -19,12 +19,12 @@ public final class R {
     }
     public static final class id {
         public static final int Button01=0x7f070013;
-        public static final int ImageView=0x7f070009;
-        public static final int LinearLayout01=0x7f070008;
+        public static final int ImageView=0x7f07000a;
+        public static final int LinearLayout01=0x7f070009;
         public static final int RelativeLayout01=0x7f070000;
-        public static final int Response=0x7f07000c;
-        public static final int TextView=0x7f07000b;
-        public static final int TextView01=0x7f07000a;
+        public static final int Response=0x7f07000d;
+        public static final int TextView=0x7f07000c;
+        public static final int TextView01=0x7f07000b;
         public static final int TextView_adresse=0x7f070003;
         public static final int TextView_email=0x7f070005;
         public static final int TextView_firma=0x7f070002;
@@ -32,7 +32,7 @@ public final class R {
         public static final int TextView_mobile=0x7f070006;
         public static final int TextView_plz_ort=0x7f070004;
         public static final int TextView_vollname=0x7f070001;
-        public static final int View01=0x7f070010;
+        public static final int View01=0x7f070011;
         public static final int about=0x7f070022;
         public static final int button=0x7f070014;
         public static final int ctx_group_sponosr=0x7f070019;
@@ -46,14 +46,14 @@ public final class R {
         public static final int ctx_sub_sponsors_1_site=0x7f07001c;
         public static final int ctx_sub_sponsors_main=0x7f07001a;
         public static final int ctx_sub_sponsors_offical=0x7f07001b;
-        public static final int getit=0x7f07000e;
+        public static final int getit=0x7f07000f;
         public static final int mapview_strassenkarte=0x7f070015;
         public static final int quit=0x7f070023;
-        public static final int search=0x7f070011;
-        public static final int searchParam=0x7f07000d;
+        public static final int search=0x7f070012;
+        public static final int searchParam=0x7f07000e;
         public static final int settings=0x7f070021;
-        public static final int textview=0x7f070012;
-        public static final int xml=0x7f07000f;
+        public static final int textview=0x7f070008;
+        public static final int xml=0x7f070010;
     }
     public static final class layout {
         public static final int item_detail=0x7f030000;

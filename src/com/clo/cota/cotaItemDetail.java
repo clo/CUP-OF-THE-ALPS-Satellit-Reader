@@ -5,14 +5,18 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class cotaItemDetail extends Activity implements OnLongClickListener{
+public class cotaItemDetail extends Activity implements OnLongClickListener, OnTouchListener {
 
 	static final String LOG_COTADB_ITEM_DETAIL = "cotadb item detail";
 	private TextView fullname = null;
@@ -22,8 +26,10 @@ public class cotaItemDetail extends Activity implements OnLongClickListener{
 	private TextView email = null;
 	private TextView mobile = null;
 	private TextView funktion = null;
-	private View view = null;
 	private RelativeLayout rl = null;
+	private TextView textview = null; 
+	private float downXValue = 0;
+	private float upXValue = 0;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -38,25 +44,14 @@ public class cotaItemDetail extends Activity implements OnLongClickListener{
         mobile = (TextView) findViewById(R.id.TextView_mobile);
         funktion = (TextView) findViewById(R.id.TextView_funktion);
         rl = (RelativeLayout)findViewById(R.id.RelativeLayout01);
-        view = (View) findViewById(R.layout.item_detail);
+        textview = (TextView) findViewById(R.id.textview);
         init();
         fillItems();
     }
     
     private void init(){
-//    	view.setOnLongClickListener(new OnLongClickListener() {
-//			
-//			@Override
-//			public boolean onLongClick(View v) {
-//				// TODO Auto-generated method stub
-//				//startActivity(new Intent(cotaItemDetail.this, cotaItemDetail.class));
-//				//Toast.makeText(getApplicationContext(), "TEST", Toast.LENGTH_LONG).show();
-//				Dialog dialog = new Dialog(getApplicationContext());
-//				dialog.setTitle("TEST");
-//				dialog.show();
-//				return false;
-//			}
-//		});
+    	registerForContextMenu(textview);
+    	textview.setOnTouchListener(this);
     }
     
     private void fillItems(){
@@ -83,4 +78,31 @@ public class cotaItemDetail extends Activity implements OnLongClickListener{
 //		// TODO Auto-generated method stub
 //		Log.v(LOG_COTADB_ITEM_DETAIL,"onClick");
 //	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		Log.v(LOG_COTADB_ITEM_DETAIL,"onToch event received ...");
+		switch (event.getAction()){
+			case MotionEvent.ACTION_DOWN:
+				downXValue = event.getX();
+				upXValue = 0;
+				break;
+			case MotionEvent.ACTION_UP:
+				upXValue = event.getX();
+		}
+		float diff = downXValue - upXValue;
+		if (diff < 0){
+			Log.v(LOG_COTADB_ITEM_DETAIL,"downXValue=" + downXValue + " upXValue=" + upXValue + " diff=" + diff);
+			goLeft();
+		}else if(diff > 0){
+			goRight();
+		}
+		return false;
+	}
+	private void goLeft(){
+		finish();
+	}
+	private void goRight(){
+		Log.v(LOG_COTADB_ITEM_DETAIL,"goRight -> todo");
+	}
 }
